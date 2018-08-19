@@ -50,6 +50,7 @@ const BaloonAnimation = animation(({
         />
       )
     case BaloonStatuses.BREAKING:
+      // FIXME: opacityが戻らない
       return (
         <a-animation
           attribute='opacity'

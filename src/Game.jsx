@@ -19,7 +19,7 @@ const Game = withStateHandlers(...gameStateHandler)(function Game ({
         <Baloon
           key={baloon.index}
           {...baloon}
-          onTouch={() => {
+          onTouchLaser={() => {
             const { status } = baloon
             if (status === BaloonStatuses.AWAITING) {
               breakBaloon(baloon)

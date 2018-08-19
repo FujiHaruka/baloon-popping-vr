@@ -14,7 +14,7 @@ const Baloon = ({
   <a-sphere
     color={colorOf(type)}
     position={positionOf(index)}
-    radius={BaloonSizes.NORMAL}
+    radius={status === BaloonStatuses.BORNING ? 0.01 : BaloonSizes.NORMAL}
     onMouseEnter={onTouch}
     visible={status === BaloonStatuses.GONE ? 'false' : 'true'}
   >

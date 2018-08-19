@@ -1,4 +1,4 @@
-import {GameStatuses, BaloonStatuses, BaloonTypes} from '../Consts'
+import {GameStatuses, BaloonStatuses, BaloonTypes, Times} from '../Consts'
 import {createBaloons} from '../helpers/BaloonHelper'
 import {replace} from '../helpers/ArrayHelper'
 
@@ -7,7 +7,7 @@ const gameStateHandler = [
     // status: GameStatuses.INIT,
     status: GameStatuses.PLAYING,
     baloons: createBaloons(4),
-    brokenBaloons: 0,
+    baloonScore: 0,
   }), {
     /**
      * ゲーム開始
@@ -21,7 +21,7 @@ const gameStateHandler = [
     /**
      * 割った風船の数をリセット
      */
-    resetBrokenBaloons: () => () => ({brokenBaloons: 0}),
+    resetbaloonScore: () => () => ({baloonScore: 0}),
 
     /**
      * ある風船のステータスを変更する
@@ -35,6 +35,7 @@ const gameStateHandler = [
         baloons: replace(baloons).at(index).with({
           ...baloon,
           status,
+          stageDuration: Math.random() * Times.GONE_MAX_TIME * 1000,
         })
       }
     },
@@ -42,38 +43,33 @@ const gameStateHandler = [
     /**
      * 風船を割る
      */
-    breakBaloon: ({baloons, brokenBaloons}) => ({index}) => {
-      const baloon = baloons[index]
-      if (!baloon) {
-        throw new Error(`Baloon at ${index} not found`)
-      }
-      // TODO: GOOD / BAD で変える
+    breakBaloon: ({baloons, baloonScore}) => (baloon) => {
+      const nextScore = baloon.type === BaloonTypes.GOOD
+        ? baloonScore + 1
+        : Math.max(baloonScore - 1, 0)
       return {
-        baloons: replace(baloons).at(index).with({
+        baloons: replace(baloons).at(baloon.index).with({
           ...baloon,
           status: BaloonStatuses.BREAKING,
+          stageDuration: Math.random() * Times.GONE_MAX_TIME * 1000,
         }),
-        brokenBaloons: brokenBaloons + 1,
+        baloonScore: nextScore,
       }
     },
 
     /**
      * 風船を生み出す
      */
-    bearBaloon: ({baloons}) => ({index}) => {
-      const baloon = baloons[index]
-      if (!baloon) {
-        throw new Error(`Baloon at ${index} not found`)
-      }
+    bearBaloon: ({baloons}) => (baloon) => {
       if (baloon.status !== BaloonStatuses.GONE) {
         throw new Error(`Baloon status is not GONE`)
       }
       return {
-        baloons: replace(baloons).at(index).with({
-          index,
+        baloons: replace(baloons).at(baloon.index).with({
+          index: baloon.index,
           type: Math.random() > 0.7 ? BaloonTypes.GOOD : BaloonTypes.BAD,
           status: BaloonStatuses.BORNING,
-          stageDuration: Math.random() * 10 * 1000,
+          stageDuration: Math.random() * Times.AWAITING_MAX_TIME * 1000,
         })
       }
     }

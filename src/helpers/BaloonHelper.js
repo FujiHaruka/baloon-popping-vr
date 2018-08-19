@@ -1,4 +1,4 @@
-import {BaloonColors, BaloonTypes, BaloonStatuses} from '../Consts'
+import {BaloonColors, BaloonTypes, BaloonStatuses, Times} from '../Consts'
 
 export const colorOf = (type) => {
   switch (type) {
@@ -37,5 +37,5 @@ export const createBaloons = (number) =>
       type: BaloonTypes.BAD,
       status: BaloonStatuses.GONE,
       // 最初に BORNING 状態に移行するまでの時間
-      stageDuration: Math.random() * 10 * 1000
+      stageDuration: Math.random() * Times.GONE_MAX_TIME * 1000
     }))

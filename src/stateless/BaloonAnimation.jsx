@@ -1,7 +1,8 @@
 import React from 'react'
 import {BaloonStatuses, BaloonSizes} from '../Consts'
+import animation from '../hoc/animation'
 
-const BaloonAnimation = ({
+const BaloonAnimation = animation(({
   status,
   stageDuration,
   onStageEnd,
@@ -13,6 +14,9 @@ const BaloonAnimation = ({
         <a-animation
           dur={stageDuration}
           onAnimationEnd={onStageEnd}
+          attribute='visible'
+          from='false'
+          to='false'
         />
       )
     case BaloonStatuses.AWAITING:
@@ -20,13 +24,16 @@ const BaloonAnimation = ({
         <a-animation
           dur={stageDuration}
           onAnimationEnd={onStageEnd}
+          attribute='visible'
+          from='true'
+          to='true'
         />
       )
     case BaloonStatuses.BORNING:
       return (
         <a-animation
           attribute='radius'
-          from={0}
+          from={0.01}
           to={BaloonSizes.NORMAL}
           dur={500}
           onAnimationEnd={onStageEnd}
@@ -54,6 +61,6 @@ const BaloonAnimation = ({
       )
     default: throw new Error(`Invalid baloon status: ${status}`)
   }
-}
+})
 
 export default BaloonAnimation

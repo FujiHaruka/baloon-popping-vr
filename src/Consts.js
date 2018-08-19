@@ -25,3 +25,8 @@ export const GameStatuses = {
   PLAYING: 'status:game:playing',
   OVER: 'status:game:over',
 }
+
+export const Times = {
+  GONE_MAX_TIME: 5,
+  AWAITING_MAX_TIME: 5,
+}

@@ -1,0 +1,12 @@
+{
+  "extends": [
+    "standard",
+    "standard-jsx"
+  ],
+  "rules": {
+    "comma-dangle": "off",
+    "indent": "off",
+    "react/self-closing-comp": "off"
+  },
+  "parser": "babel-eslint"
+}
